@@ -18,5 +18,5 @@ int		ft_putstr(char *str)
 
 	i = ft_strlen(str);
 	write(1, str, i);
-	return (i);
+	return (i - 1);
 }

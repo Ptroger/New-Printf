@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
-int		ft_handle_modulo(char *format, va_list tab)
+int		ft_handle_modulo()
 {
+  ft_putchar('%');
 	return (0);
 }

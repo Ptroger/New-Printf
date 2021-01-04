@@ -38,6 +38,7 @@ int		ft_handle_char(const char format, va_list tab);
 
 //############# FONCTIONS UTILS PRINTF ########################
 
+int   ft_handle_modulo();
 char	*ft_itoa(int n);
 int		ft_isdigit(int c);
 int		ft_strlen(char *str);

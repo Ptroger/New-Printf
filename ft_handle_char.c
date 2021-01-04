@@ -19,7 +19,7 @@ int	ft_handle_char(const char format, va_list tab)
 	if (format == 'c')
 	{
 		ft_putchar(va_arg(tab, int));
-		return (1);
+		return (0);
 	}
-	return (ft_putstr(va_arg(tab, char*)) - 1);
+	return (ft_putstr(va_arg(tab, char*)));
 }

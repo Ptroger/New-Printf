@@ -15,79 +15,57 @@
 
 int		put_tab(const char *format, va_list tab)
 {
-	if (*format == 'c' || *format == 's')
-	{
-		return (ft_handle_char(*format, tab));
-	}
-	if (*format == 'd' || *format == 'i' || *format == 'u')
-		return (ft_handle_numbers(*format, tab));
-	//if (*format == '%')
-	//	return (ft_handle_modulo(*format, tab));
-	//if (*format == 'p' || *format == 'x' || *format == 'X')
-	//	return (ft_handle_hexa(*format, tab));
-	return (0);
+  if (*format == 'c' || *format == 's')
+  {
+    return (ft_handle_char(*format, tab));
+  }
+  if (*format == 'd' || *format == 'i' || *format == 'u')
+    return (ft_handle_numbers(*format, tab));
+  if (*format == '%')
+  	return (ft_handle_modulo());
+  //if (*format == 'p' || *format == 'x' || *format == 'X')
+  	//return (ft_handle_hexa(*format, tab));
+  return (0);
 }
 
-char	getFlag(char format)
+char	getFlag(char c)
 {
-	int		i;
-	char	*flags;
-	char	c;
-
-	flags = ft_strdup("cspdiuxX%");
-	i = 0;
-	while (flags[i])
-	{
-		if (format == flags[i])
-		{
-			c = flags[i];
-			free(flags);
-			flags = NULL;
-			return ('c');
-		}
-		i++;
-	}
-	return ('e');
+  if (c == '%' || c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' || c == 'u' || c == 'x' || c == 'X')
+    return (1);
+  else 
+    return (0);
 }
-
-int		parse(const char *format, va_list tab)
+int parse(const char *format, va_list tab)
 {
-	int			i;
-	int			nb_flag;
-	int			tab_len;
+  int i;
+  int len;
 
-	nb_flag = 0;
-	i = 0;
-	while (format[i])
-	{
-		if (format[i] != '%')
-		{
-			ft_putchar(format[i]);
-			i++;
-		}
-		if (format[i] == '%')
-		{
-			nb_flag++;
-			i++;
-			if (getFlag(format[i]) == 'e')
-				i += parse_options(format + i, tab);
-			printf("\nI == %d\n", i);
-			tab_len += put_tab(format + i, tab);
-			i++;
-			printf("\nformat[%d] == %c\n", i, format[i]);
-		}
-	}
-	return (i - nb_flag + tab_len);
+  len = 0;
+  i = -1;
+  while (format[++i])
+  {
+    if (format[i] == '%')
+    {
+      i++;
+      if (getFlag(format[i]))
+        len += (put_tab(format + i, tab) -1);
+      else
+        i += parse_options(format + i, tab);
+    }
+    else
+      ft_putchar(format[i]);
+  }
+  return (i + len);
 }
 
 int		ft_printf(const char *format, ...)
 {
-	int			result;
-	va_list		tab;
-	char		*str;
+  int			result;
+  va_list		tab;
+  char		*str;
 
-	va_start(tab, format);
-	result = parse((char*)format, tab);
-	va_end(tab);
-	return (result);
+  va_start(tab, format);
+  result = parse((char*)format, tab);
+  va_end(tab);
+  return (result);
 }

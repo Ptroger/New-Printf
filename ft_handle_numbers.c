@@ -39,5 +39,5 @@ int		ft_handle_numbers(const char format, va_list tab)
 	str = ft_itoa(nb);
 	i = ft_strlen(str);
 	free(str);
-	return (i);
+	return (i - 1);
 }
