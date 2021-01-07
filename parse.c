@@ -23,8 +23,8 @@ int		put_tab(const char *format, va_list tab)
     return (ft_handle_numbers(*format, tab));
   if (*format == '%')
   	return (ft_handle_modulo());
-  //if (*format == 'p' || *format == 'x' || *format == 'X')
-  	//return (ft_handle_hexa(*format, tab));
+  if (*format == 'p' || *format == 'x' || *format == 'X')
+  	return (ft_handle_hexa(*format, tab));
   return (0);
 }
 

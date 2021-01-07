@@ -3,15 +3,16 @@
 
 int	main()
 {
-	int	i;
+    void *i;
 	char	c;
 	char	*s;
   char *s2;
+  unsigned int u = 24;
 
 	s = "tat";
   s2 = "1234";
 	c = '\n';
-	i = 0;
-	printf("printf == %d\n", printf("tontc%s%%18%s%d", s, s2, i));
-	ft_printf("printf == %d\n", ft_printf("tontc%s%%18%s%d", s, s2, i));
+	i = &s;
+	printf("printf == %d\n", printf("tontc%s%%18%s\n%p\n %u", s, s2, i, u));
+	ft_printf("printf == %d\n", ft_printf("tontc%s%%18%s\n%p\n %u", s, s2, i, u));
 }

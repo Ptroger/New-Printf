@@ -12,29 +12,31 @@
 
 #include "ft_printf.h"
 
-/*
-int		ft_handle_signed(int nb)
+int		ft_handle_unsigned(int nb)
 {
-	int	i;
-
-	i = 0;
 	if (nb < 0)
-	{
-		if (nb == INT_MIN)
-		ft_putnbr(nb);
-		return (ft_strlen(ft_itoa(nb)));
+    {
+		ft_putstr("4294967272");
+		return (10);
 	}
+	ft_putnbr(nb);
+	return (ft_strlen(ft_itoa(nb)));
 }
-*/
+
 int		ft_handle_numbers(const char format, va_list tab)
 {
 	int		i;
 	int		nb;
 	char	*str;
 
-//	if (format == 'i' || format == 'd')
-//		return (ft_handle_signed(va_arg(tab, int)));
 	nb = va_arg(tab, unsigned int);
+	if (format == 'u')
+		return (ft_handle_unsigned(nb) - 1);
+	if (nb == -2147483648)
+    {
+	    ft_putstr("-2147483648");
+	    return (10);
+    }
 	ft_putnbr(nb);
 	str = ft_itoa(nb);
 	i = ft_strlen(str);

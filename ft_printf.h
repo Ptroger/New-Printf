@@ -24,11 +24,12 @@ typedef struct		s_struct
 	int				paddle;
 }					t_struct;
 
-//############# FONCTIONS AFFICHAGE ENTIERS DECIMAUX ##########
+
+//############# FONCTIONS AFFICHAGE ENTIERS ##########
 
 int		ft_handle_numbers(const char format, va_list tab);
 void	ft_putnbr(int n);
-
+int     ft_handle_hexa(const char format, va_list tab);
 
 //############# FONCTIONS AFFICHAGE CHAR ET CHAR* #############
 
@@ -38,7 +39,8 @@ int		ft_handle_char(const char format, va_list tab);
 
 //############# FONCTIONS UTILS PRINTF ########################
 
-int   ft_handle_modulo();
+char	*ft_itoa_base(unsigned long int nb, unsigned int base);
+int     ft_handle_modulo();
 char	*ft_itoa(int n);
 int		ft_isdigit(int c);
 int		ft_strlen(char *str);
