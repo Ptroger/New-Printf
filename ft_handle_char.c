@@ -12,14 +12,16 @@
 
 #include "ft_printf.h"
 
-int	ft_handle_char(const char format, va_list tab)
+void	ft_handle_char(const char format, va_list tab, struct t_values *values, struct t_options *options)
 {
 	char	*str;
 
 	if (format == 'c')
 	{
 		ft_putchar(va_arg(tab, int));
-		return (0);
+        values->result += 1;
+        return ;
 	}
-	return (ft_putstr(va_arg(tab, char*)));
+    values->result += ft_putstr(va_arg(tab, char*));
+    return ;
 }

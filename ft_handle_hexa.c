@@ -1,23 +1,39 @@
 #include "ft_printf.h"
 #include "stdio.h"
 
-int     ft_handle_hexa(const char format, va_list tab)
+char    *ft_to_upper(char *str)
 {
-    char    *hex;
-    int nb;
-    int len;
+    int i;
 
-    nb = va_arg(tab, unsigned long int);
-    if (format == 'p') {
-        len += 2;
-        ft_putstr("0x");
+    i = -1;
+    while(str[i++])
+        str[i] -= 40;
+    return(str);
+}
+
+void     ft_handle_hexa(const char format, va_list tab, t_values *values, t_options *options)
+{
+    char *hex;
+    unsigned long nb;
+
+    if (format == 'X' || format == 'x')
+    {
+        nb = va_arg(tab, unsigned int);
+        if (format == 'X') {
+            if (options->hash == 1)
+                values->result += ft_putstr("0X");
+        }
+        if (options->hash == 1)
+            values->result += ft_putstr("0x");
+        hex = ft_to_upper(ft_itoa_base((unsigned int)nb, 16));
     }
-    //    if (nb < 0)
-//        hex = convert_to_hex_neg(nb);
-//    else
-    hex = ft_itoa_base(nb, 16);
-    len += ft_strlen(hex);
-    ft_putstr(hex);
+    else
+    {
+      values->result += ft_putstr("0x");
+        nb = va_arg(tab, unsigned long);
+        hex = ft_itoa_base(nb, 16);
+    }
+    values->result += ft_putstr(hex);
     free(hex);
-    return(len);
+    return ;
 }

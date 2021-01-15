@@ -12,8 +12,8 @@
 
 #include "ft_printf.h"
 
-int		ft_handle_modulo()
+void        ft_handle_modulo(t_values *values, t_options *options)
 {
   ft_putchar('%');
-	return (0);
+	return ;
 }
