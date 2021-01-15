@@ -15,10 +15,9 @@
 
 void        put_tab(const char *format, va_list tab, struct t_values *values, struct t_options *options)
 {
-    if (values->width != 0)
-      ft_handle_options(tab, values, options);
+
   if (format[values->index] == 'c' || format[values->index] == 's')
-      ft_handle_char(format[values->index], tab, values, options);
+    ft_handle_char(format[values->index], tab, values, options);
   else if (format[values->index] == 'd' || format[values->index] == 'i' || format[values->index] == 'u')
     ft_handle_numbers(format[values->index], tab, values, options);
   else if (format[values->index] == '%')
@@ -30,10 +29,10 @@ void        put_tab(const char *format, va_list tab, struct t_values *values, st
 
 int     getOptions(char c)
 {
-    if (c == '#' || c == '-' || c == '*' || c == '.' || ft_isdigit(c))
-        return (1);
-    else
-        return (0);
+  if (c == '#' || c == '-' || c == '*' || c == '.' || ft_isdigit(c))
+    return (1);
+  else
+    return (0);
 }
 
 char	getFlag(char c)
@@ -48,14 +47,13 @@ void parse(const char *format, va_list tab, struct t_values *values, struct t_op
 {
     while (format[values->index])
   {
-      if (format[values->index] == '%')
+     if (format[values->index] == '%')
     {
       values->index++;
       if (getOptions(format[values->index]))
         parse_options(format, tab, values, options);
-//        printf("\nformat = %c\n", format[values->index]);
-        if (getFlag(format[values->index]))
-          put_tab(format, tab, values, options);
+      if (getFlag(format[values->index]))
+        put_tab(format, tab, values, options);
     }
     else
       ft_putchar(format[values->index]);

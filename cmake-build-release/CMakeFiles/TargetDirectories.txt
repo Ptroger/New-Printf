@@ -1,0 +1,3 @@
+/Users/ptroger/42-projects/ft_printf/cmake-build-release/CMakeFiles/rebuild_cache.dir
+/Users/ptroger/42-projects/ft_printf/cmake-build-release/CMakeFiles/edit_cache.dir
+/Users/ptroger/42-projects/ft_printf/cmake-build-release/CMakeFiles/ft_printf.dir

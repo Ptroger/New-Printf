@@ -17,8 +17,6 @@ char *ft_itoa_base(unsigned long nb, unsigned int base) {
     char *ret;
     char *numbers;
     int size;
-    int temp;
-
 
     numbers = ft_strdup("0123456789abcdef");
     ret = NULL;

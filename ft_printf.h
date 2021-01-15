@@ -23,6 +23,7 @@ typedef struct		t_options
 	char            negative;
 	char            zero;
 	char            dot;
+	char            dotHash;
 	char            hash;
 }					t_options;
 
@@ -38,7 +39,7 @@ typedef struct		t_values
 //############# FONCTIONS AFFICHAGE ENTIERS ##########
 
 void		ft_handle_numbers(const char format, va_list ta, struct t_values *values, struct t_options *options);
-void	ft_putnbr(int n);
+void	ft_putnbr(int n, struct t_values *values, struct t_options *options);
 void     ft_handle_hexa(const char format, va_list tab, struct t_values *values, struct t_options *options);
 
 //############# FONCTIONS GESTION STRUCT #############
@@ -48,9 +49,9 @@ struct t_values     *initialise_values(void);
 
 //############# FONCTIONS AFFICHAGE CHAR ET CHAR* #############
 
-void    ft_handle_options(va_list tab, struct t_values *values, struct t_options *options);
+void    ft_handle_options(struct t_values *values, struct t_options *options);
 int 	ft_putchar(int c);
-int		ft_putstr(char *str);
+int		ft_putstr(char *str, struct t_values *values, struct t_options *options, const char format);
 void	ft_handle_char(const char format, va_list tab, struct t_values *values, struct t_options *options);
 
 //############# FONCTIONS UTILS PRINTF ########################

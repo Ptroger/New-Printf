@@ -12,10 +12,27 @@
 
 #include "ft_printf.h"
 
-//void		parse_after_width(const char *format, va_list tab, struct t_values *values, struct t_options *options)
-//{
-//
-//}
+void		parse_after_width(const char *format, va_list tab, struct t_values *values, struct t_options *options) {
+    char *str;
+    int i;
+
+    i = 0;
+    str = (char *) malloc(64);
+    if (format[values->index] == '.')
+    {
+        values->index += 1;
+    }
+    while (format[values->index] >= '0' && format[values->index] <= '9')
+        str[i++] = format[values->index++];
+    if (format[values->index] == '#')
+    {
+        options->dotHash = '#';
+        values->precision = va_arg(tab, int);
+    }
+    if (options->dot != '#')
+        values->precision = ft_atoi(str);
+    free(str);
+}
 
 void		parse_options(const char *format, va_list tab, struct t_values *values, struct t_options *options)
 {
@@ -23,6 +40,7 @@ void		parse_options(const char *format, va_list tab, struct t_values *values, st
     int     i;
 
     i = 0;
+    str = (char*)malloc(64);
     while (format[values->index] == '#' || format[values->index] == '-' || format[values->index] == '0')
     {
         if (format[values->index] == '#' && !options->hash)
@@ -33,21 +51,18 @@ void		parse_options(const char *format, va_list tab, struct t_values *values, st
             options->zero = '0';
         values->index += 1;
     }
-//    printf("\nLALALA == %d\n", values->index);
-//    printf("\nICI == %s\n", format);
     if (format[values->index] == '*')
     {
         options->wildcard = '*';
         values->index += 1;
-//        printf("\nICI == %c\n", format[values->index - 6]);
+        values->width += va_arg(tab, int);
     }
-    while (ft_isdigit(format[values->index]))
-    {
-        str[i++] = format[values->index];
-        values->index += 1;
-    }
-    if (str)
+    while (format[values->index] >= '0' && format[values->index] <= '9')
+        str[i++] = format[values->index++];
+    str[i] = '\0';
+    if (!options->wildcard)
         values->width = ft_atoi(str);
-//    parse_after_width(format, tab, values, options);
+    free(str);
+    parse_after_width(format, tab, values, options);
 	return ;
 }

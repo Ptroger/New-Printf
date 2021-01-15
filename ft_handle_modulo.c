@@ -14,6 +14,9 @@
 
 void        ft_handle_modulo(t_values *values, t_options *options)
 {
+  values->width -= 1;
+  if (values->width > 0)
+      ft_handle_options(values, options);
   ft_putchar('%');
 	return ;
 }

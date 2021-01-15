@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/ptroger/42-projects/ft_printf/ft_printf.h
+stdlib.h
+-
+stdarg.h
+-
+string.h
+-
+unistd.h
+-
+
+/Users/ptroger/42-projects/ft_printf/ft_putstr.c
+ft_printf.h
+/Users/ptroger/42-projects/ft_printf/ft_printf.h
+

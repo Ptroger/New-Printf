@@ -8,6 +8,7 @@ t_options     *initialise_options(void)
     if (!options)
         return (NULL);
     options->hash = '\0';
+    options->dotHash = '\0';
     options->negative = '\0';
     options->zero = '\0';
     options->wildcard = '\0';
@@ -24,7 +25,7 @@ t_values     *initialise_values(void)
         return (NULL);
     values->index = 0;
     values->result = 0;
-    values->precision = 0;
+    values->precision = -1;
     values->width = 0;
     return(values);
 }

@@ -14,14 +14,16 @@
 
 void	ft_handle_char(const char format, va_list tab, struct t_values *values, struct t_options *options)
 {
-	char	*str;
-
 	if (format == 'c')
 	{
-		ft_putchar(va_arg(tab, int));
+        values->precision = 0;
         values->result += 1;
+        values->width -= 1;
+        if (values->width > 0)
+            ft_handle_options(values, options);
+        ft_putchar(va_arg(tab, int));
         return ;
 	}
-    values->result += ft_putstr(va_arg(tab, char*));
+    values->result += ft_putstr(va_arg(tab, char*), values, options, format);
     return ;
 }

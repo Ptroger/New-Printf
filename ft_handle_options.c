@@ -1,15 +1,17 @@
 #include "ft_printf.h"
 
-void    ft_handle_options(va_list tab, struct t_values *values, struct t_options *options)
+
+void    ft_handle_options(struct t_values *values, struct t_options *options)
 {
-    if (options->hash == '#')
-        values->width = va_arg(tab, unsigned int);
-    if (options->zero == '0')
+    if (options->negative == '\0')
     {
-        while (values->width--)
-            values->result += ft_putchar('0');
+        if (options->zero == '0')
+        {
+            while (values->width-- > 0)
+                values->result += ft_putchar('0');
+        }
+        while (values->width-- > 0)
+            values->result += ft_putchar(' ');
     }
-    while (values->width--)
-        values->result += ft_putchar(' ');
     return;
 }
