@@ -13,21 +13,21 @@
 #include "ft_printf.h"
 #include "stdio.h"
 
-void        put_tab(const char *format, va_list tab, struct t_values *values, struct t_options *options)
+void        put_tab(const char *format, va_list tab, struct t_val *val, struct t_opts *opts)
 {
 
-  if (format[values->index] == 'c' || format[values->index] == 's')
-    ft_handle_char(format[values->index], tab, values, options);
-  else if (format[values->index] == 'd' || format[values->index] == 'i' || format[values->index] == 'u')
-    ft_handle_numbers(format[values->index], tab, values, options);
-  else if (format[values->index] == '%')
-  	ft_handle_modulo(values, options);
-  else if (format[values->index] == 'p' || format[values->index] == 'x' || format[values->index] == 'X')
-  	ft_handle_hexa(format[values->index], tab, values, options);
+  if (format[val->index] == 'c' || format[val->index] == 's')
+    ft_handle_char(format[val->index], tab, val, opts);
+  else if (format[val->index] == 'd' || format[val->index] == 'i' || format[val->index] == 'u')
+    ft_handle_numbers(format[val->index], tab, val, opts);
+  else if (format[val->index] == '%')
+  	ft_handle_modulo(val, opts);
+  else if (format[val->index] == 'p' || format[val->index] == 'x' || format[val->index] == 'X')
+  	ft_handle_hexa(format[val->index], tab, val, opts);
   return ;
 }
 
-int     getOptions(char c)
+int     getopts(char c)
 {
   if (c == '#' || c == '-' || c == '*' || c == '.' || ft_isdigit(c))
     return (1);
@@ -43,46 +43,43 @@ char	getFlag(char c)
     return (0);
 }
 
-void parse(const char *format, va_list tab, struct t_values *values, struct t_options *options)
+void parse(const char *format, va_list tab, struct t_val *val, struct t_opts *opts)
 {
-    while (format[values->index])
+    while (format[val->index])
   {
-     if (format[values->index] == '%')
+
+	  if (format[val->index] == '%')
     {
-      values->index++;
-      if (getOptions(format[values->index]))
-        parse_options(format, tab, values, options);
-      if (getFlag(format[values->index]))
-        put_tab(format, tab, values, options);
+      val->index++;
+		if (getopts(format[val->index]))
+        	parse_opts(format, tab, val, opts);
+		if (getFlag(format[val->index]))
+        	put_tab(format, tab, val, opts);
     }
     else
-      ft_putchar(format[values->index]);
-    values->index += 1;
-    values->result += 1;
+      ft_putchar(format[val->index]);
+    val->index += 1;
+    val->result += 1;
   }
     return ;
 }
 
 int		ft_printf(const char *format, ...)
 {
-    t_values    *values;
-    t_options   *options;
+    t_val    *val;
+    t_opts   *opts;
     int         i;
 
-    options = initialise_options();
-    values = initialise_values();
-    if (!options || !values)
-    {
-//        printf("icicicic");
-//        ft_putstr("Malloc Error");
-        return(0);
-    }
+    opts = initialise_opts();
+    val = initialise_val();
+    if (!opts || !val)
+        return(-1);
   va_list		tab;
   va_start(tab, format);
-  parse((char*)format, tab, values, options);
+  parse((char*)format, tab, val, opts);
   va_end(tab);
-  free(options);
-  i = values->result;
-  free(values);
+  i = val->result;
+  free(opts);
+  free(val);
   return (i);
 }

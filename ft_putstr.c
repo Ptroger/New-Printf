@@ -12,35 +12,33 @@
 
 #include "ft_printf.h"
 
-void     ft_handle_precision(int i, struct t_values *values, struct t_options *options)
+int		ft_putstr(char *str, struct t_val *val, struct t_opts *opts, const char format)
 {
-    values->precision -= i;
-    while(values->width-- > values->precision)
-        values->result += ft_putchar(' ');
-    values->width = 0;
-    while(values->precision-- > 0)
-        values->result += ft_putchar('0');
-    values->precision = -1;
-}
-
-int		ft_putstr(char *str, struct t_values *values, struct t_options *options, const char format)
-{
+    if (!str)
+        return (ft_putstr("(null)", val, opts, 's'));
 	int	i;
-
-	i = ft_strlen(str);
-    values->width -= i;
-    if (values->precision >= i)
-        ft_handle_precision(i, values, options);
-    if (values->width > 0 || values->precision >= 0)
-        ft_handle_options(values, options);
+    i = ft_strlen(str);
+	if (format == 's' && opts->dot == '.' && val->precision >= 0 && val->precision < i)
+        val->width = (val->width - i) + (i - val->precision);
+	else if (opts->negative != '-')
+	    val->width = (val->width - i);
     if (format == 's')
     {
-        if (options->dot == '.' && values->precision != -1)
+		if (val->width > 0 || val->precision >= 0)
+            ft_handle_opts(val, opts, str);
+		if (opts->dot == '.' && val->precision >= 0 && val->precision < i)
         {
-            write(1, str, values->precision);
-            return (values->precision);
+			write(1, str, val->precision);
+            while (val->width-- > 0 && opts->negative == '-')
+                val->result += ft_putchar(' ');
+            opts->negative = '\0';
+			return (val->precision -= 1);
         }
     }
-	write(1, str, i);
+    write(1, str, i);
+    while (format == 's' && (val->width-- - i) > 0 && opts->negative == '-')
+        val->result += ft_putchar(' ');
+    if (format == 's')
+        opts->negative = '\0';
 	return (i - 1);
 }

@@ -22,7 +22,7 @@ static	char	*ft_strnew(size_t size)
 	return (str);
 }
 
-static	int		ft_intlen(int n)
+static	int		ft_intlen(unsigned int n)
 {
 	int	len;
 
@@ -37,6 +37,24 @@ static	int		ft_intlen(int n)
 		len++;
 	}
 	return (len);
+}
+
+char			*ft_unsigned_itoa(unsigned int n)
+{
+    int		i;
+    char	*s;
+
+    if (!(s = ft_strnew(ft_intlen(n))))
+        return (NULL);
+    i = 0;
+    if (n == 0)
+        s[i++] = '0';
+    while (n > 0)
+    {
+        s[(ft_intlen(n)) + i - 1] = n % 10 + 48;
+        n /= 10;
+    }
+    return (s);
 }
 
 char			*ft_itoa(int n)

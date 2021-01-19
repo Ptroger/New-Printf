@@ -12,53 +12,128 @@
 
 #include "ft_printf.h"
 
-//char        *ft_strcpy(char *dest, char *src)
-//{
-//    int i;
-//
-//    i = 0;
-//    while(dest[i++])
-//        dest[i] = dest[i];
-//    return(dest);
-//}
-
-void		ft_handle_unsigned(int nb, struct t_values *values, struct t_options *options, const char format)
+void ft_handle_int(struct t_val *val, struct t_opts *opts, int i, int nb, char *str)
 {
-    char    *str;
-	if (nb < 0)
+    if (opts->negative != '-')
     {
-		ft_putstr("4294967272", values, options, format);
-        values->result += 10;
-        return ;
-	}
-	str = ft_itoa(nb);
-	values->result += ft_putstr(str, values, options, format);
-	free(str);
-	return ;
+        if (opts->zero != '0' || (opts->dot == '.' && val->precision >= 0))
+        {
+//            printf("\ni = %d\nval->precision = %d\nval->width = %d\n", i, val->precision, val->width);
+            while (val->width > val->precision && val->width > i)
+            {
+                val->result += ft_putchar(' ');
+                val->width--;
+            }
+        }
+        if (nb < 0)
+            val->result += ft_putchar('-');
+        while (val->width > val->precision && val->width > i)
+        {
+            val->width--;
+            val->result += ft_putchar('0');
+        }
+        while (val->precision-- > i)
+            val->result += ft_putchar('0');
+        val->result += ft_putstr(str, val, opts, 'd');
+    } else if (opts->negative == '-')
+    {
+        if (nb < 0)
+            val->result += ft_putchar('-');
+        while (val->precision > i)
+        {
+            val->width--;
+            val->precision--;
+            val->result += ft_putchar('0');
+        }
+        val->result += ft_putstr(str, val, opts, 'd');
+        while (val->width - i > 0)
+        {
+            val->width--;
+            val->result += ft_putchar(' ');
+        }
+        opts->negative = '\0';
+    }
 }
 
-void        ft_handle_numbers(const char format, va_list tab, struct t_values *values, struct t_options *options)
+void ft_handle_unsigned(unsigned int nb, struct t_val *val, struct t_opts *opts, const char format)
 {
-	int		nb;
-	char	*str;
+    char *str;
 
-	str = (char*)malloc(11);
-	str[11] = '\0';
-	if (format == 'u')
-	{
-        nb = va_arg(tab, unsigned int);
-        ft_handle_unsigned(nb, values, options,format);
-        return ;
+    if (nb == 0 && val->precision == 0 && opts->dot == '.')
+    {
+        handle_zero_zero(val, opts, format);
+        val->result--;
+        return;
+    }
+    str = ft_unsigned_itoa(nb);
+    ft_handle_int(val, opts, ft_strlen(str), 1, str);
+    free(str);
+    return;
+}
+
+void handle_zero_zero(struct t_val *val, struct t_opts *opts, const char format)
+{
+    if (format == 'p' && opts->negative)
+    {
+        if (opts->dot == '.')
+            val->result += ft_putstr("0x", val, opts, format);
+        else
+            val->result += ft_putstr("0x0", val, opts, format);
+    }
+    while (val->width > 0)
+    {
+        val->width--;
+        val->result += ft_putchar(' ');
+    }
+    if (format == 'p' && !opts->negative)
+    {
+        if (opts->dot == '.')
+            val->result += ft_putstr("0x", val, opts, format);
+        else
+            val->result += ft_putstr("0x0", val, opts, format);
+    }
+}
+
+void ft_handle_numbers(const char format, va_list tab, struct t_val *val, struct t_opts *opts)
+{
+    int     nb;
+    int     i;
+    char    *str;
+    int     neg;
+
+    neg = 1;
+    i = 0;
+    str = (char *) malloc(11);
+    str[11] = '\0';
+    if (format == 'u')
+    {
+        nb = va_arg(tab,
+        unsigned int);
+        ft_handle_unsigned(nb, val, opts, format);
+        return;
     }
     nb = va_arg(tab, int);
+    if (nb == 0 && val->precision == 0 && opts->dot == '.')
+    {
+        handle_zero_zero(val, opts, format);
+        val->result--;
+        return;
+    }
     if (nb == -2147483648)
     {
-	    ft_putstr("-2147483648", values, options, format);
-	    values->result += 10;
-	    return ;
+        ft_putstr("-2147483648", val, opts, format);
+        val->result += 10;
+        return;
+
     }
-	str = ft_itoa(nb);
-	values->result += ft_putstr(str, values, options, format);
-	free(str);
-	return ;
+    if (nb < 0)
+    {
+        neg = -1;
+        val->width--;
+    }
+    str = ft_itoa(nb * neg);
+    i += ft_strlen(str);
+    ft_handle_int(val, opts, i, neg, str);
+    free(str);
+    reset_opts(val, opts);
 }

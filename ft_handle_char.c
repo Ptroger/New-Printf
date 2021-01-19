@@ -12,18 +12,22 @@
 
 #include "ft_printf.h"
 
-void	ft_handle_char(const char format, va_list tab, struct t_values *values, struct t_options *options)
+void	ft_handle_char(const char format, va_list tab, struct t_val *val, struct t_opts *opts)
 {
 	if (format == 'c')
 	{
-        values->precision = 0;
-        values->result += 1;
-        values->width -= 1;
-        if (values->width > 0)
-            ft_handle_options(values, options);
-        ft_putchar(va_arg(tab, int));
-        return ;
+		val->precision = 0;
+		val->width -= 1;
+		if (val->width > 0)
+			ft_handle_opts(val, opts, "+");
+		ft_putchar(va_arg(tab,
+		int));
+		while (val->width-- > 0 && opts->negative == '-')
+			val->result += ft_putchar(' ');
+		opts->negative = '\0';
+		return;
 	}
-    values->result += ft_putstr(va_arg(tab, char*), values, options, format);
-    return ;
+	val->result += ft_putstr(va_arg(tab, char*), val, opts, format);
+	reset_opts(val, opts);
+	return;
 }

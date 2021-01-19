@@ -1,31 +1,43 @@
 #include "ft_printf.h"
 
-t_options     *initialise_options(void)
+t_opts     *initialise_opts(void)
 {
-    t_options   *options;
+    t_opts   *opts;
 
-    options = (t_options*)malloc(sizeof(struct t_options));
-    if (!options)
+    opts = (t_opts*)malloc(sizeof(struct t_opts));
+    if (!opts)
         return (NULL);
-    options->hash = '\0';
-    options->dotHash = '\0';
-    options->negative = '\0';
-    options->zero = '\0';
-    options->wildcard = '\0';
-    options->dot = '\0';
-    return(options);
+    opts->hash = '\0';
+    opts->dotHash = '\0';
+    opts->negative = '\0';
+    opts->zero = '\0';
+    opts->wildcard = '\0';
+    opts->dot = '\0';
+    return(opts);
 }
 
-t_values     *initialise_values(void)
+t_val     *initialise_val(void)
 {
-    t_values   *values;
+    t_val   *val;
 
-    values = (t_values*)malloc(sizeof(struct t_values));
-    if (!values)
+    val = (t_val*)malloc(sizeof(struct t_val));
+    if (!val)
         return (NULL);
-    values->index = 0;
-    values->result = 0;
-    values->precision = -1;
-    values->width = 0;
-    return(values);
+    val->index = 0;
+    val->result = 0;
+    val->precision = 0;
+    val->width = 0;
+    return(val);
+}
+
+void                reset_opts(struct t_val *val, struct t_opts *opts)
+{
+    opts->hash = '\0';
+    opts->dotHash = '\0';
+    opts->negative = '\0';
+    opts->zero = '\0';
+    opts->wildcard = '\0';
+    opts->dot = '\0';
+    val->precision = 0;
+    val->width = 0;
 }
