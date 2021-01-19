@@ -12,26 +12,26 @@
 
 #include "ft_printf.h"
 
-void    ft_handle_modulo(t_val *val, t_opts *opts)
+void	ft_handle_modulo(t_val *val, t_opts *opts)
 {
-    val->width -= 1;
-    if (!opts->negative)
-    {
-        if (opts->zero == '0')
-        {
-            while(val->width-- > 0)
-                val->result += ft_putchar('0');
-        }
-        while(val->width-- > 0)
-            val->result += ft_putchar(' ');
-        if (!opts->negative)
-            ft_putchar('%');
-    }
-    else
-    {
-        ft_putchar('%');
-        while(val->width-- > 0)
-            val->result += ft_putchar(' ');
-    }
-    reset_opts(val, opts);
+	val->width -= 1;
+	if (!opts->negative)
+	{
+		if (opts->zero == '0')
+		{
+			while (val->width-- > 0)
+				val->result += ft_putchar('0');
+		}
+		while (val->width-- > 0)
+			val->result += ft_putchar(' ');
+		if (!opts->negative)
+			ft_putchar('%');
+	}
+	else
+	{
+		ft_putchar('%');
+		while (val->width-- > 0)
+			val->result += ft_putchar(' ');
+	}
+	reset_opts(val, opts);
 }

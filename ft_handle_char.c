@@ -12,7 +12,8 @@
 
 #include "ft_printf.h"
 
-void	ft_handle_char(const char format, va_list tab, struct t_val *val, struct t_opts *opts)
+void	ft_handle_char(const char format, va_list tab, struct t_val *val,
+	struct t_opts *opts)
 {
 	if (format == 'c')
 	{
@@ -25,9 +26,9 @@ void	ft_handle_char(const char format, va_list tab, struct t_val *val, struct t_
 		while (val->width-- > 0 && opts->negative == '-')
 			val->result += ft_putchar(' ');
 		opts->negative = '\0';
-		return;
+		return ;
 	}
 	val->result += ft_putstr(va_arg(tab, char*), val, opts, format);
 	reset_opts(val, opts);
-	return;
+	return ;
 }
