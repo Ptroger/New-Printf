@@ -12,104 +12,44 @@
 
 #include "ft_printf.h"
 
-void	ft_handle_neg(struct t_val *val, struct t_opts *opts, int nb,
-	char *str)
-{
-	int i;
-
-	i = ft_strlen(str);
-	if (nb < 0)
-		val->result += ft_putchar('-');
-	while (val->precision > i)
-	{
-		val->width--;
-		val->precision--;
-		val->result += ft_putchar('0');
-	}
-	val->result += ft_putstr(str, val, opts, 'd');
-	while (val->width - i > 0)
-	{
-		val->width--;
-		val->result += ft_putchar(' ');
-	}
-	opts->negative = '\0';
-}
-
-void	ft_handle_not_neg(struct t_val *val, struct t_opts *opts, int nb,
-	char *str)
-{
-	int i;
-
-	i = ft_strlen(str);
-	if (opts->zero != '0' || (opts->dot == '.' && val->precision >= 0))
-	{
-		while (val->width > val->precision && val->width > i)
-		{
-			val->result += ft_putchar(' ');
-			val->width--;
-		}
-	}
-	if (nb < 0 && ft_atoi(str) != -2147483648)
-		val->result += ft_putchar('-');
-	while (val->width > val->precision && val->width > i)
-	{
-		val->width--;
-		val->result += ft_putchar('0');
-	}
-	while (val->precision-- > i)
-		val->result += ft_putchar('0');
-	val->result += ft_putstr(str, val, opts, 'd');
-}
-
-void	ft_handle_nb(struct t_val *val, struct t_opts *opts, int nb,
-	char *str)
-{
-	if (nb < 0)
-		val->width--;
-	if (opts->negative != '-')
-		ft_handle_not_neg(val, opts, nb, str);
-	else if (opts->negative == '-')
-		ft_handle_neg(val, opts, nb, str);
-}
-
-void	ft_handle_unsigned(unsigned int nb, struct t_val *val,
-	struct t_opts *opts, const char format)
+void	ft_handle_unsigned(unsigned int nb, struct s_val *val,
+	struct s_opt *opt, const char format)
 {
 	char *str;
 
-	if (nb == 0 && val->precision == 0 && opts->dot == '.')
+	if (nb == 0 && val->precision == 0 && opt->dot == '.')
 	{
-		handle_zero_zero(val, opts, format);
+		handle_zero_zero(val, opt, format);
 		val->result--;
 		return ;
 	}
 	str = ft_unsigned_itoa(nb);
-	ft_handle_nb(val, opts, 1, str);
+	ft_handle_nb(val, opt, 1, str);
 	free(str);
 	return ;
 }
 
-void	handle_zero_zero(struct t_val *val, struct t_opts *opts,
+void	handle_zero_zero(struct s_val *val, struct s_opt *opt,
 	const char format)
 {
-	if (format == 'p' && opts->negative)
+	if (format == 'p' && opt->negative)
 	{
-		if (opts->dot == '.')
-			val->result += ft_putstr("0x", val, opts, format);
+		if (opt->dot == '.')
+			val->result += ft_putstr("0x", val, opt, format);
 		else
-			val->result += ft_putstr("0x0", val, opts, format);
+			val->result += ft_putstr("0x0", val, opt, format);
 	}
 	while (val->width > 0)
 	{
 		val->width--;
 		val->result += ft_putchar(' ');
 	}
-	if (format == 'p' && !opts->negative)
+	if (format == 'p' && !opt->negative)
 	{
-		if (opts->dot == '.')
-			val->result += ft_putstr("0x", val, opts, format);
+		if (opt->dot == '.')
+			val->result += ft_putstr("0x", val, opt, format);
 		else
-			val->result += ft_putstr("0x0", val, opts, format);
+			val->result += ft_putstr("0x0", val, opt, format);
 	}
 	if (format == 'd' || format == 'i')
 		val->result--;
@@ -130,8 +70,8 @@ char	*ft_handle_int(int nb)
 	return (str);
 }
 
-void	ft_handle_numbers(const char format, va_list tab, struct t_val *val,
-	struct t_opts *opts)
+void	ft_handle_numbers(const char format, va_list tab, struct s_val *val,
+	struct s_opt *opt)
 {
 	char	*str;
 	int		neg;
@@ -141,18 +81,18 @@ void	ft_handle_numbers(const char format, va_list tab, struct t_val *val,
 	if (format == 'u')
 	{
 		nb = va_arg(tab, unsigned int);
-		ft_handle_unsigned(nb, val, opts, format);
+		ft_handle_unsigned(nb, val, opt, format);
 		return ;
 	}
 	nb = va_arg(tab, int);
-	if (nb == 0 && val->precision == 0 && opts->dot == '.')
-		handle_zero_zero(val, opts, format);
-	if (format == 'u' || (nb == 0 && val->precision == 0 && opts->dot == '.'))
+	if (nb == 0 && val->precision == 0 && opt->dot == '.')
+		handle_zero_zero(val, opt, format);
+	if (format == 'u' || (nb == 0 && val->precision == 0 && opt->dot == '.'))
 		return ;
 	if (nb < 0)
 		neg = -1;
 	str = ft_handle_int(nb);
-	ft_handle_nb(val, opts, neg, str);
+	ft_handle_nb(val, opt, neg, str);
 	free(str);
-	reset_opts(val, opts);
+	reset_opt(val, opt);
 }

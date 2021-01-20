@@ -1,26 +1,26 @@
 #include "ft_printf.h"
 
-t_opts	*initialise_opts(void)
+struct	s_opt	*initialise_opt(void)
 {
-	t_opts	*opts;
+	struct s_opt	*opt;
 
-	opts = (t_opts *)malloc(sizeof(struct t_opts));
-	if (!opts)
+	opt = (struct s_opt*)malloc(sizeof(s_opt));
+	if (!opt)
 		return (NULL);
-	opts->hash = '\0';
-	opts->dothash = '\0';
-	opts->negative = '\0';
-	opts->zero = '\0';
-	opts->wildcard = '\0';
-	opts->dot = '\0';
-	return (opts);
+	opt->hash = '\0';
+	opt->dothash = '\0';
+	opt->negative = '\0';
+	opt->zero = '\0';
+	opt->wildcard = '\0';
+	opt->dot = '\0';
+	return (opt);
 }
 
-s_val	*initialise_val(void)
+struct	s_val	*initialise_val(void)
 {
-	s_val	*val;
+	struct s_val	*val;
 
-	val = (s_val*)malloc(sizeof(s_val));
+	val = (struct s_val*)malloc(sizeof(s_val));
 	if (!val)
 		return (NULL);
 	val->index = 0;
@@ -30,14 +30,14 @@ s_val	*initialise_val(void)
 	return (val);
 }
 
-void	reset_opts(struct t_val *val, struct t_opts *opts)
+void			reset_opt(struct s_val *val, struct s_opt *opt)
 {
-	opts->hash = '\0';
-	opts->dothash = '\0';
-	opts->negative = '\0';
-	opts->zero = '\0';
-	opts->wildcard = '\0';
-	opts->dot = '\0';
+	opt->hash = '\0';
+	opt->dothash = '\0';
+	opt->negative = '\0';
+	opt->zero = '\0';
+	opt->wildcard = '\0';
+	opt->dot = '\0';
 	val->precision = 0;
 	val->width = 0;
 }

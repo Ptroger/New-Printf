@@ -12,49 +12,49 @@
 
 #include "ft_printf.h"
 
-void	first_checks(char *str, const char format, struct t_val *val,
-	struct t_opts *opts)
+void	first_checks(char *str, const char format, struct s_val *val,
+	struct s_opt *opt)
 {
 	int i;
 
 	i = ft_strlen(str);
-	if (format == 's' && opts->dot == '.' && val->precision >= 0 &&
+	if (format == 's' && opt->dot == '.' && val->precision >= 0 &&
 		val->precision < i)
 		val->width = (val->width - i) + (i - val->precision);
-	else if (opts->negative != '-')
+	else if (opt->negative != '-')
 		val->width = (val->width - i);
 	if (format == 's')
 	{
 		if (val->width > 0 || val->precision >= 0)
-			ft_handle_opts(val, opts, str);
-		if (opts->dot == '.' && val->precision >= 0 && val->precision < i)
+			ft_handle_opt(val, opt, str);
+		if (opt->dot == '.' && val->precision >= 0 && val->precision < i)
 		{
 			write(1, str, val->precision);
-			while (val->width-- > 0 && opts->negative == '-')
+			while (val->width-- > 0 && opt->negative == '-')
 				val->result += ft_putchar(' ');
-			opts->negative = '\0';
+			opt->negative = '\0';
 		}
 	}
 }
 
-int		ft_putstr(char *str, struct t_val *val, struct t_opts *opts,
+int		ft_putstr(char *str, struct s_val *val, struct s_opt *opt,
 	const char format)
 {
 	int i;
 
 	if (!str)
-		return (ft_putstr("(null)", val, opts, 's'));
+		return (ft_putstr("(null)", val, opt, 's'));
 	i = ft_strlen(str);
-	first_checks(str, format, val, opts);
+	first_checks(str, format, val, opt);
 	if (format == 's')
 	{
-		if (opts->dot == '.' && val->precision >= 0 && val->precision < i)
+		if (opt->dot == '.' && val->precision >= 0 && val->precision < i)
 			return (val->precision -= 1);
 	}
 	write(1, str, i);
-	while (format == 's' && (val->width-- - i) > 0 && opts->negative == '-')
+	while (format == 's' && (val->width-- - i) > 0 && opt->negative == '-')
 		val->result += ft_putchar(' ');
 	if (format == 's')
-		opts->negative = '\0';
+		opt->negative = '\0';
 	return (i - 1);
 }

@@ -57,6 +57,20 @@ char		*ft_unsigned_itoa(unsigned int n)
 	return (s);
 }
 
+char		*ft_to_upper(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] -= ('a' - 'A');
+		i++;
+	}
+	return (str);
+}
+
 char		*ft_itoa(int n)
 {
 	int		i;

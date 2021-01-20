@@ -12,23 +12,23 @@
 
 #include "ft_printf.h"
 
-void	ft_handle_char(const char format, va_list tab, struct t_val *val,
-	struct t_opts *opts)
+void	ft_handle_char(const char format, va_list tab, struct s_val *val,
+	struct s_opt *opt)
 {
 	if (format == 'c')
 	{
 		val->precision = 0;
 		val->width -= 1;
 		if (val->width > 0)
-			ft_handle_opts(val, opts, "+");
+			ft_handle_opt(val, opt, "+");
 		ft_putchar(va_arg(tab,
 		int));
-		while (val->width-- > 0 && opts->negative == '-')
+		while (val->width-- > 0 && opt->negative == '-')
 			val->result += ft_putchar(' ');
-		opts->negative = '\0';
+		opt->negative = '\0';
 		return ;
 	}
-	val->result += ft_putstr(va_arg(tab, char*), val, opts, format);
-	reset_opts(val, opts);
+	val->result += ft_putstr(va_arg(tab, char*), val, opt, format);
+	reset_opt(val, opt);
 	return ;
 }
