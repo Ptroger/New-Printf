@@ -12,33 +12,49 @@
 
 #include "ft_printf.h"
 
-int		ft_putstr(char *str, struct t_val *val, struct t_opts *opts, const char format)
+void	first_checks(char *str, const char format, struct t_val *val,
+	struct t_opts *opts)
 {
-    if (!str)
-        return (ft_putstr("(null)", val, opts, 's'));
-	int	i;
-    i = ft_strlen(str);
-	if (format == 's' && opts->dot == '.' && val->precision >= 0 && val->precision < i)
-        val->width = (val->width - i) + (i - val->precision);
+	int i;
+
+	i = ft_strlen(str);
+	if (format == 's' && opts->dot == '.' && val->precision >= 0 &&
+		val->precision < i)
+		val->width = (val->width - i) + (i - val->precision);
 	else if (opts->negative != '-')
-	    val->width = (val->width - i);
-    if (format == 's')
-    {
+		val->width = (val->width - i);
+	if (format == 's')
+	{
 		if (val->width > 0 || val->precision >= 0)
-            ft_handle_opts(val, opts, str);
+			ft_handle_opts(val, opts, str);
 		if (opts->dot == '.' && val->precision >= 0 && val->precision < i)
-        {
+		{
 			write(1, str, val->precision);
-            while (val->width-- > 0 && opts->negative == '-')
-                val->result += ft_putchar(' ');
-            opts->negative = '\0';
+			while (val->width-- > 0 && opts->negative == '-')
+				val->result += ft_putchar(' ');
+			opts->negative = '\0';
+		}
+	}
+}
+
+int		ft_putstr(char *str, struct t_val *val, struct t_opts *opts,
+	const char format)
+{
+	int i;
+
+	if (!str)
+		return (ft_putstr("(null)", val, opts, 's'));
+	i = ft_strlen(str);
+	first_checks(str, format, val, opts);
+	if (format == 's')
+	{
+		if (opts->dot == '.' && val->precision >= 0 && val->precision < i)
 			return (val->precision -= 1);
-        }
-    }
-    write(1, str, i);
-    while (format == 's' && (val->width-- - i) > 0 && opts->negative == '-')
-        val->result += ft_putchar(' ');
-    if (format == 's')
-        opts->negative = '\0';
+	}
+	write(1, str, i);
+	while (format == 's' && (val->width-- - i) > 0 && opts->negative == '-')
+		val->result += ft_putchar(' ');
+	if (format == 's')
+		opts->negative = '\0';
 	return (i - 1);
 }

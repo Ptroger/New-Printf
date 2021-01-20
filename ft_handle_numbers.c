@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void ft_handle_neg(struct t_val *val, struct t_opts *opts, int nb,
+void	ft_handle_neg(struct t_val *val, struct t_opts *opts, int nb,
 	char *str)
 {
 	int i;
@@ -35,7 +35,7 @@ void ft_handle_neg(struct t_val *val, struct t_opts *opts, int nb,
 	opts->negative = '\0';
 }
 
-void ft_handle_not_neg(struct t_val *val, struct t_opts *opts, int nb,
+void	ft_handle_not_neg(struct t_val *val, struct t_opts *opts, int nb,
 	char *str)
 {
 	int i;
@@ -49,7 +49,7 @@ void ft_handle_not_neg(struct t_val *val, struct t_opts *opts, int nb,
 			val->width--;
 		}
 	}
-	if (nb < 0)
+	if (nb < 0 && ft_atoi(str) != -2147483648)
 		val->result += ft_putchar('-');
 	while (val->width > val->precision && val->width > i)
 	{
@@ -61,16 +61,19 @@ void ft_handle_not_neg(struct t_val *val, struct t_opts *opts, int nb,
 	val->result += ft_putstr(str, val, opts, 'd');
 }
 
-void ft_handle_int(struct t_val *val, struct t_opts *opts, int nb,
+void	ft_handle_nb(struct t_val *val, struct t_opts *opts, int nb,
 	char *str)
 {
+	if (nb < 0)
+		val->width--;
 	if (opts->negative != '-')
 		ft_handle_not_neg(val, opts, nb, str);
 	else if (opts->negative == '-')
 		ft_handle_neg(val, opts, nb, str);
 }
 
-void ft_handle_unsigned(unsigned int nb, struct t_val *val, struct t_opts *opts, const char format)
+void	ft_handle_unsigned(unsigned int nb, struct t_val *val,
+	struct t_opts *opts, const char format)
 {
 	char *str;
 
@@ -81,12 +84,13 @@ void ft_handle_unsigned(unsigned int nb, struct t_val *val, struct t_opts *opts,
 		return ;
 	}
 	str = ft_unsigned_itoa(nb);
-	ft_handle_int(val, opts, 1, str);
+	ft_handle_nb(val, opts, 1, str);
 	free(str);
 	return ;
 }
 
-void handle_zero_zero(struct t_val *val, struct t_opts *opts, const char format)
+void	handle_zero_zero(struct t_val *val, struct t_opts *opts,
+	const char format)
 {
 	if (format == 'p' && opts->negative)
 	{
@@ -107,49 +111,48 @@ void handle_zero_zero(struct t_val *val, struct t_opts *opts, const char format)
 		else
 			val->result += ft_putstr("0x0", val, opts, format);
 	}
+	if (format == 'd' || format == 'i')
+		val->result--;
 }
 
-void ft_handle_numbers(const char format, va_list tab, struct t_val *val, struct t_opts *opts)
+char	*ft_handle_int(int nb)
 {
-	int nb;
-	int i;
-	char *str;
-	int neg;
+	char	*str;
+	int		neg;
 
 	neg = 1;
-	i = 0;
-	str = (char *) malloc(11);
-	str[11] = '\0';
+	if (nb < 0)
+		neg = -1;
+	if (nb == -2147483648)
+		str = ft_strdup("2147483648");
+	else
+		str = ft_itoa(nb * neg);
+	return (str);
+}
+
+void	ft_handle_numbers(const char format, va_list tab, struct t_val *val,
+	struct t_opts *opts)
+{
+	char	*str;
+	int		neg;
+	int		nb;
+
+	neg = 1;
 	if (format == 'u')
 	{
-		nb = va_arg(tab,
-		unsigned int);
+		nb = va_arg(tab, unsigned int);
 		ft_handle_unsigned(nb, val, opts, format);
-		return ; 
+		return ;
 	}
-	nb = va_arg(tab,
-	int);
+	nb = va_arg(tab, int);
 	if (nb == 0 && val->precision == 0 && opts->dot == '.')
-	{
 		handle_zero_zero(val, opts, format);
-		val->result--;
+	if (format == 'u' || (nb == 0 && val->precision == 0 && opts->dot == '.'))
 		return ;
-	}
-	if (nb == -2147483648)
-	{
-		ft_putstr("-2147483648", val, opts, format);
-		val->result += 10;
-		return ;
-
-	}
 	if (nb < 0)
-	{
 		neg = -1;
-		val->width--;
-	}
-	str = ft_itoa(nb * neg);
-	i += ft_strlen(str);
-	ft_handle_int(val, opts, neg, str);
+	str = ft_handle_int(nb);
+	ft_handle_nb(val, opts, neg, str);
 	free(str);
 	reset_opts(val, opts);
 }

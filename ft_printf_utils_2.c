@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static	char	*ft_strnew(size_t size)
+static char	*ft_strnew(size_t size)
 {
 	char	*str;
 
@@ -22,9 +22,9 @@ static	char	*ft_strnew(size_t size)
 	return (str);
 }
 
-static	int		ft_intlen(unsigned int n)
+static int	ft_intlen(unsigned int n)
 {
-	int	len;
+	int		len;
 
 	if (n == 0)
 		return (1);
@@ -39,25 +39,25 @@ static	int		ft_intlen(unsigned int n)
 	return (len);
 }
 
-char			*ft_unsigned_itoa(unsigned int n)
+char		*ft_unsigned_itoa(unsigned int n)
 {
-    int		i;
-    char	*s;
+	int		i;
+	char	*s;
 
-    if (!(s = ft_strnew(ft_intlen(n))))
-        return (NULL);
-    i = 0;
-    if (n == 0)
-        s[i++] = '0';
-    while (n > 0)
-    {
-        s[(ft_intlen(n)) + i - 1] = n % 10 + 48;
-        n /= 10;
-    }
-    return (s);
+	if (!(s = ft_strnew(ft_intlen(n))))
+		return (NULL);
+	i = 0;
+	if (n == 0)
+		s[i++] = '0';
+	while (n > 0)
+	{
+		s[(ft_intlen(n)) + i - 1] = n % 10 + 48;
+		n /= 10;
+	}
+	return (s);
 }
 
-char			*ft_itoa(int n)
+char		*ft_itoa(int n)
 {
 	int		i;
 	char	*s;

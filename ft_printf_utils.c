@@ -44,22 +44,22 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_isdigit(int c)
+int		ft_isdigit(int c)
 {
-    if (c >= '0' && c <= '9')
+	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
 }
 
 int		ft_atoi(const char *str)
 {
-	int				sign;
-	long	int		res;
+	int			sign;
+	long int	res;
 
 	sign = 1;
 	res = 0;
 	while ((*str == '\t' || *str == '\n' || *str == '\r' || *str == '\v' ||
-		*str == '\f' || *str == ' ') && (*str))
+			*str == '\f' || *str == ' ') && (*str))
 		str++;
 	if (*str == '-')
 		sign = -1;
