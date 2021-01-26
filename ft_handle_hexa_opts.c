@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_handle_hexa_opts.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pierre <ptroger@student.42.fr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/26 22:19:06 by pierre            #+#    #+#             */
+/*   Updated: 2021/01/26 22:24:11 by pierre           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 void	ft_handle_hash(struct s_val *val, struct s_opt *opt,
@@ -65,7 +77,7 @@ void	ft_handle_not_negative(struct s_val *val, struct s_opt *opt,
 }
 
 void	ft_handle_options(struct s_val *val, struct s_opt *opt, char *str,
-					   const char format)
+		const char format)
 {
 	if (format != 'p' && opt->hash == '#')
 		val->width -= 2;

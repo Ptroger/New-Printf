@@ -19,8 +19,8 @@ SRCS =  parse.c \
 SURPL_O = 	parse.o \
             parse_opt.o \
             initialize_structs.o \
-            ft_handle_hexa_opts.c \
-    		ft_handle_nb_opts.o \
+            ft_handle_hexa_opts.o \
+    		    ft_handle_nb_opts.o \
             ft_printf_utils_2.o \
             ft_printf_utils.o \
             ft_handle_char.o \
