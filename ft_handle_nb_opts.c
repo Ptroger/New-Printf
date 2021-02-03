@@ -49,7 +49,7 @@ void	ft_handle_not_neg(struct s_val *val, struct s_opt *opt, int nb,
 			val->width--;
 		}
 	}
-	if (nb < 0 && ft_atoi(str) != -2147483648)
+	if (nb < 0)
 		val->result += ft_putchar('-');
 	while (val->width > val->precision && val->width > i)
 	{

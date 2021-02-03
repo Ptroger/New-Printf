@@ -26,6 +26,7 @@ void	ft_handle_char(const char format, va_list tab, struct s_val *val,
 		while (val->width-- > 0 && opt->negative == '-')
 			val->result += ft_putchar(' ');
 		opt->negative = '\0';
+		reset_opt(val, opt);
 		return ;
 	}
 	val->result += ft_putstr(va_arg(tab, char*), val, opt, format);

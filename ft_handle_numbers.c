@@ -82,6 +82,7 @@ void	ft_handle_numbers(const char format, va_list tab, struct s_val *val,
 	{
 		nb = va_arg(tab, unsigned int);
 		ft_handle_unsigned(nb, val, opt, format);
+		reset_opt(val, opt);
 		return ;
 	}
 	nb = va_arg(tab, int);

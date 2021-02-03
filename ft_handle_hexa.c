@@ -95,7 +95,10 @@ void	ft_handle_hexa(const char format, va_list tab,
 	else
 		hex = ft_handle_p(format, tab, val, opt);
 	if (!hex)
-		return ;
+	{
+		reset_opt(val, opt);
+		return;
+	}
 	ft_handle_options(val, opt, hex, format);
 	free(hex);
 	reset_opt(val, opt);
