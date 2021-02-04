@@ -6,7 +6,7 @@
 /*   By: pierre <ptroger@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:05:59 by pierre            #+#    #+#             */
-/*   Updated: 2021/01/26 22:22:47 by pierre           ###   ########.fr       */
+/*   Updated: 2021/02/04 11:19:39 by pierre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_handle_hexa(const char format, va_list tab,
 	if (!hex)
 	{
 		reset_opt(val, opt);
-		return;
+		return ;
 	}
 	ft_handle_options(val, opt, hex, format);
 	free(hex);
