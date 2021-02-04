@@ -1,4 +1,0 @@
-/Users/ptroger/42-projects/ft_printf/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/ptroger/42-projects/ft_printf/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/ptroger/42-projects/ft_printf/cmake-build-debug/CMakeFiles/libftprintf.a.dir
-/Users/ptroger/42-projects/ft_printf/cmake-build-debug/CMakeFiles/ft_printf.dir
